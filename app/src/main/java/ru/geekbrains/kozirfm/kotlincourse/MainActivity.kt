@@ -1,14 +1,25 @@
-package ru.geekbrains.kozirfm.kotlincourse;
+package ru.geekbrains.kozirfm.kotlincourse
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle
+import android.widget.Button
+import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 
-import android.os.Bundle;
+class MainActivity : AppCompatActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setContentView(R.layout.activity_main)
 
-public class MainActivity extends AppCompatActivity {
+        val textView = findViewById<TextView>(R.id.textView)
+        val button = findViewById<Button>(R.id.button)
 
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        val hello = "Hello"
+        val char = '!'
+        val text = "$hello ${getWorld()} $char"
+
+        button.setOnClickListener { textView.text = text }
     }
+
+    private fun getWorld() = "World"
+
 }
