@@ -12,7 +12,7 @@ class MainActivity : AppCompatActivity() {
         val char = '!'
         val text = "$hello ${getWorld()} $char"
 
-        this.button.setOnClickListener { this.textView.text = text }
+        button.setOnClickListener { textView.text = text }
     }
 
     private fun getWorld() = "World"
