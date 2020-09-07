@@ -35,8 +35,9 @@ object NotesRepository {
         notesLiveData.value = notes
     }
 
-    fun changeNote(id: Int, note: Note) {
-        notes[id] = note
+    fun changeNote(note: Note, newNote: Note) {
+        notes.remove(note)
+        notes.add(newNote)
         notesLiveData.value = notes
     }
 

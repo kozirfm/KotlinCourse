@@ -6,13 +6,16 @@ import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 
 class NoteViewModel : ViewModel() {
 
-    fun addOrChangeNote(id: Int = NotesRepository.notes.size, title: String, text: String) {
-        if (id == NotesRepository.notes.size) {
+    fun addOrChangeNote(note: Note? = null, id: Int = NotesRepository.notes.size, title: String, text: String) {
+        if (note == null) {
             if (title != "" || text != "") {
                 NotesRepository.saveNote(Note(id, title, text))
             }
         } else {
-            NotesRepository.changeNote(id = id, Note(id, title, text))
+            if (note.title != title || note.text != text){
+                val newNote = note.copy(title = title, text = text)
+                NotesRepository.changeNote(note, newNote)
+            }
         }
     }
 }

@@ -30,7 +30,6 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private lateinit var noteViewModel: NoteViewModel
-    private var noteId: Int? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -38,36 +37,27 @@ class NoteActivity : AppCompatActivity() {
 
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
-        initView()
+        val note: Note? = intent.getParcelableExtra(EXTRA_NOTE)
+
+        initView(note)
 
         noteFabSave.setOnClickListener {
-            txtFromViewToNote()
+            txtFromViewToNote(note)
             onBackPressed()
         }
     }
 
-    private fun initView() {
-        val note: Note? = intent.getParcelableExtra(EXTRA_NOTE)
-
+    private fun initView(note: Note?) {
         note?.let {
             editTxtTitleNoteActivity.setText(it.title)
             editTxtTextNoteActivity.setText(it.text)
-            noteId = it.id
         }
     }
 
-    private fun txtFromViewToNote() {
-        val id: Int? = noteId
-        if (id != null) {
-            noteViewModel.addOrChangeNote(
-                    id = id,
-                    title = editTxtTitleNoteActivity.text.toString(),
-                    text = editTxtTextNoteActivity.text.toString())
-        } else {
-            noteViewModel.addOrChangeNote(
-                    title = editTxtTitleNoteActivity.text.toString(),
-                    text = editTxtTextNoteActivity.text.toString())
-        }
+    private fun txtFromViewToNote(note: Note?) {
+        noteViewModel.addOrChangeNote(note = note,
+                title = editTxtTitleNoteActivity.text.toString(),
+                text = editTxtTextNoteActivity.text.toString())
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

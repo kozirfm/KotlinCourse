@@ -12,7 +12,7 @@ class NotesAdapter(var onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Ada
 
     var notes: List<Note> = listOf()
         set(value) {
-            field = value
+            field = value.reversed()
             notifyDataSetChanged()
         }
 
