@@ -1,4 +1,4 @@
-package ru.geekbrains.kozirfm.kotlincourse.ui
+package ru.geekbrains.kozirfm.kotlincourse.ui.viewstate
 
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 
