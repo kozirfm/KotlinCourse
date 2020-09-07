@@ -30,6 +30,7 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private lateinit var noteViewModel: NoteViewModel
+    private var note: Note? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +38,7 @@ class NoteActivity : AppCompatActivity() {
 
         noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
-        val note: Note? = intent.getParcelableExtra(EXTRA_NOTE)
+        note = intent.getParcelableExtra(EXTRA_NOTE)
 
         initView(note)
 
@@ -67,7 +68,13 @@ class NoteActivity : AppCompatActivity() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
-            R.id.noteMenuItemDelete -> onBackPressed()
+            R.id.noteMenuItemBack -> onBackPressed()
+            R.id.noteMenuItemDelete -> {
+                note?.let{
+                    noteViewModel.removeNote(it)
+                    onBackPressed()
+                }
+            }
         }
         return true
     }

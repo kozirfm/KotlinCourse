@@ -18,4 +18,8 @@ class NoteViewModel : ViewModel() {
             }
         }
     }
+
+    fun removeNote(note: Note) {
+        NotesRepository.removeNote(note)
+    }
 }
