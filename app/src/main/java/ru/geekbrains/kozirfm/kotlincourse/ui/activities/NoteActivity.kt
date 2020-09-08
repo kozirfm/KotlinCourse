@@ -5,14 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_note.*
 import ru.geekbrains.kozirfm.kotlincourse.R
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.NoteViewModel
+import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.NoteViewState
 
-class NoteActivity : AppCompatActivity() {
+class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     companion object {
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
@@ -29,14 +29,16 @@ class NoteActivity : AppCompatActivity() {
 
     }
 
-    private lateinit var noteViewModel: NoteViewModel
     private var note: Note? = null
+
+    override val viewModel: NoteViewModel by lazy {
+        ViewModelProvider(this).get(NoteViewModel::class.java)
+    }
+
+    override val layoutRes: Int = R.layout.activity_note
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_note)
-
-        noteViewModel = ViewModelProvider(this).get(NoteViewModel::class.java)
 
         note = intent.getParcelableExtra(EXTRA_NOTE)
 
@@ -56,7 +58,7 @@ class NoteActivity : AppCompatActivity() {
     }
 
     private fun txtFromViewToNote(note: Note?) {
-        noteViewModel.addOrChangeNote(note = note,
+        viewModel.addOrChangeNote(note = note,
                 title = editTxtTitleNoteActivity.text.toString(),
                 text = editTxtTextNoteActivity.text.toString())
     }
@@ -70,8 +72,8 @@ class NoteActivity : AppCompatActivity() {
         when (item.itemId) {
             R.id.noteMenuItemBack -> onBackPressed()
             R.id.noteMenuItemDelete -> {
-                note?.let{
-                    noteViewModel.removeNote(it)
+                note?.let {
+                    viewModel.removeNote(it)
                     onBackPressed()
                 }
             }
@@ -79,4 +81,7 @@ class NoteActivity : AppCompatActivity() {
         return true
     }
 
+    override fun renderData(data: Note?) {
+        data?.let { println(it) }
+    }
 }
