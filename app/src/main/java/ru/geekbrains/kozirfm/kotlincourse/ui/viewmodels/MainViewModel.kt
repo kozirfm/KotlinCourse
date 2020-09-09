@@ -5,18 +5,18 @@ import androidx.lifecycle.Observer
 import ru.geekbrains.kozirfm.kotlincourse.data.NotesRepository
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewState
+import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewStates
 
-class MainViewModel : BaseViewModel<List<Note>?, MainViewState>() {
+class MainViewModel : BaseViewModel<List<Note>?, MainViewStates>() {
 
     private val notesObserver = Observer<NoteResult> { result ->
         result ?: return@Observer
         when (result) {
             is NoteResult.Success<*> -> {
-                viewStateLiveData.value = MainViewState(notes = result.data as List<Note>?)
+                viewStateLiveData.value = MainViewStates.ShowNotes(notes = result.data as List<Note>?)
             }
             is NoteResult.Error -> {
-                viewStateLiveData.value = MainViewState(error = result.error)
+                viewStateLiveData.value = MainViewStates.ShowError(error = result.error)
             }
         }
     }

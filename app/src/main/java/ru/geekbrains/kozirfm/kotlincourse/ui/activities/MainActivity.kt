@@ -1,7 +1,6 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.activities
 
 import android.os.Bundle
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -9,9 +8,9 @@ import ru.geekbrains.kozirfm.kotlincourse.R
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.ui.adapters.NotesAdapter
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.MainViewModel
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewState
+import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewStates
 
-class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
+class MainActivity : BaseActivity<List<Note>?, MainViewStates>() {
 
     private lateinit var notesAdapter: NotesAdapter
 
