@@ -1,12 +1,13 @@
 package ru.geekbrains.kozirfm.kotlincourse.data
 
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
-import ru.geekbrains.kozirfm.kotlincourse.data.providers.ArrayDataProvider
+import ru.geekbrains.kozirfm.kotlincourse.data.providers.FirestoreDataProvider
 import ru.geekbrains.kozirfm.kotlincourse.data.providers.RemoteDataProvider
 
 object NotesRepository {
 
-    private val remoteProvider: RemoteDataProvider = ArrayDataProvider()
+    //private val remoteProvider: RemoteDataProvider = ArrayDataProvider()
+    private val remoteProvider: RemoteDataProvider = FirestoreDataProvider()
 
     fun getNotes() = remoteProvider.getNotes()
     fun saveNote(note: Note) = remoteProvider.saveNote(note = note)

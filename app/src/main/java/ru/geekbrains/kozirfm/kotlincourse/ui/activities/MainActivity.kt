@@ -1,6 +1,7 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.activities
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
@@ -36,6 +37,12 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
 
     override fun renderData(data: List<Note>?) {
         data?.let { notesAdapter.notes = it }
+    }
+
+    override fun showError(error: Throwable?) {
+        error?.let {
+            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+        }
     }
 
 

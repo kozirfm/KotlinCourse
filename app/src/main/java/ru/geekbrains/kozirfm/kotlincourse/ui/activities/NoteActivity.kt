@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_note.*
 import ru.geekbrains.kozirfm.kotlincourse.R
@@ -82,6 +83,14 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     override fun renderData(data: Note?) {
-        data?.let { println(it) }
+        data?.let {
+            Toast.makeText(applicationContext, getString(R.string.complete), Toast.LENGTH_SHORT).show()
+        }
+    }
+
+    override fun showError(error: Throwable?) {
+        error?.let {
+            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+        }
     }
 }

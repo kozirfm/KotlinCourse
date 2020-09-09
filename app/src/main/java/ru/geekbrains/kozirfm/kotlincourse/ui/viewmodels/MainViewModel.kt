@@ -15,6 +15,9 @@ class MainViewModel : BaseViewModel<List<Note>?, MainViewState>() {
             is NoteResult.Success<*> -> {
                 viewStateLiveData.value = MainViewState(notes = result.data as List<Note>?)
             }
+            is NoteResult.Error -> {
+                viewStateLiveData.value = MainViewState(error = result.error)
+            }
         }
     }
 
