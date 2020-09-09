@@ -11,15 +11,12 @@ import java.util.*
 class NoteViewModel : BaseViewModel<Note?, NoteViewState>() {
 
     fun addOrChangeNote(note: Note? = null, title: String, text: String) {
-        if (note == null) {
-            if (title != "" || text != "") {
-                addObserver(NotesRepository.saveNote(Note(title, text)))
-            }
-        } else {
-            if (note.title != title || note.text != text) {
+        note?.let {if (note.title != title || note.text != text) {
                 val newNote = note.copy(title = title, text = text, lastChanged = Date())
                 addObserver(NotesRepository.changeNote(note, newNote))
-            }
+            }}
+                ?: if (title != "" || text != "") {
+                addObserver(NotesRepository.saveNote(Note(title, text)))
         }
     }
 
