@@ -1,24 +1,26 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.activities
 
 import android.os.Bundle
-import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 import ru.geekbrains.kozirfm.kotlincourse.R
+import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.ui.adapters.NotesAdapter
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.MainViewModel
+import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewStates
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : BaseActivity<List<Note>?, MainViewStates>() {
 
-    private lateinit var viewModel: MainViewModel
     private lateinit var notesAdapter: NotesAdapter
 
+    override val viewModel: MainViewModel by lazy {
+        ViewModelProvider(this).get(MainViewModel::class.java)
+    }
+
+    override val layoutRes: Int = R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
         recyclerViewMain.layoutManager = GridLayoutManager(applicationContext, 2)
         notesAdapter = NotesAdapter {
@@ -26,13 +28,14 @@ class MainActivity : AppCompatActivity() {
         }
         recyclerViewMain.adapter = notesAdapter
 
-        viewModel.viewState().observe(this, { state ->
-            state?.let { notesAdapter.notes = it.notes }
-        })
-
         mainFabAdd.setOnClickListener {
             NoteActivity.start(this)
         }
 
     }
+
+    override fun renderData(data: List<Note>?) {
+        data?.let { notesAdapter.notes = it }
+    }
+
 }
