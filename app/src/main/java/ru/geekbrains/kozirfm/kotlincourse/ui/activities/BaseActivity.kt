@@ -1,6 +1,7 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.activities
 
 import android.os.Bundle
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.BaseViewModel
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.BaseViewState
@@ -22,6 +23,11 @@ abstract class BaseActivity<T, S : BaseViewState<T>> : AppCompatActivity() {
     }
 
     abstract fun renderData(data: T)
-    abstract fun showError(error: Throwable?)
+
+    private fun showError(error: Throwable?){
+        error?.let {
+            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
+        }
+    }
 
 }

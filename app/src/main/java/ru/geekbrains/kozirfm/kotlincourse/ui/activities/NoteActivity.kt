@@ -88,9 +88,4 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         }
     }
 
-    override fun showError(error: Throwable?) {
-        error?.let {
-            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-        }
-    }
 }

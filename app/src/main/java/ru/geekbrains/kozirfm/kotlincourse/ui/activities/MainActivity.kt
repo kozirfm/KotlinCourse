@@ -39,11 +39,4 @@ class MainActivity : BaseActivity<List<Note>?, MainViewState>() {
         data?.let { notesAdapter.notes = it }
     }
 
-    override fun showError(error: Throwable?) {
-        error?.let {
-            Toast.makeText(applicationContext, it.message, Toast.LENGTH_SHORT).show()
-        }
-    }
-
-
 }
