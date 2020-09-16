@@ -7,7 +7,7 @@ import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewStates
 
-class MainViewModel : BaseViewModel<List<Note>?, MainViewStates>() {
+class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>?, MainViewStates>() {
 
     private val notesObserver = Observer<NoteResult> { result ->
         result ?: return@Observer
@@ -21,7 +21,7 @@ class MainViewModel : BaseViewModel<List<Note>?, MainViewStates>() {
         }
     }
 
-    private val repositoryNotes: LiveData<NoteResult> = NotesRepository.getNotes()
+    private val repositoryNotes: LiveData<NoteResult> = notesRepository.getNotes()
 
     init {
         repositoryNotes.observeForever(notesObserver)

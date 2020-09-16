@@ -9,6 +9,7 @@ import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import com.firebase.ui.auth.AuthUI
 import kotlinx.android.synthetic.main.activity_main.*
+import org.koin.android.ext.android.inject
 import ru.geekbrains.kozirfm.kotlincourse.R
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.ui.adapters.NotesAdapter
@@ -25,20 +26,19 @@ class MainActivity : BaseActivity<List<Note>?, MainViewStates>() {
         }
     }
 
-    private lateinit var notesAdapter: NotesAdapter
-
-    override val viewModel: MainViewModel by lazy {
-        ViewModelProvider(this).get(MainViewModel::class.java)
+    private val notesAdapter: NotesAdapter by lazy {
+        NotesAdapter {
+            NoteActivity.start(this, it)
+        }
     }
+
+    override val viewModel: MainViewModel by inject()
 
     override val layoutRes: Int = R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         recyclerViewMain.layoutManager = GridLayoutManager(applicationContext, 2)
-        notesAdapter = NotesAdapter {
-            NoteActivity.start(this, it)
-        }
         recyclerViewMain.adapter = notesAdapter
 
         mainFabAdd.setOnClickListener {
@@ -65,9 +65,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewStates>() {
     }
 
     private fun showLogoutDialog() {
-        supportFragmentManager.findFragmentByTag(LogoutDialog.TAG) ?: LogoutDialog.createInstance {
-            onLogout()
-        }.show(supportFragmentManager, LogoutDialog.TAG)
+        LogoutDialog.createInstance { onLogout() }.show(supportFragmentManager, LogoutDialog.TAG)
     }
 
     private fun onLogout() {

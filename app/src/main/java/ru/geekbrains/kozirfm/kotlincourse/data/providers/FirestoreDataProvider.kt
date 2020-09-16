@@ -2,7 +2,9 @@ package ru.geekbrains.kozirfm.kotlincourse.data.providers
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
+import com.google.firebase.firestore.FirebaseFirestore
 import com.google.firebase.firestore.ktx.firestore
 import com.google.firebase.ktx.Firebase
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
@@ -10,7 +12,7 @@ import ru.geekbrains.kozirfm.kotlincourse.data.entity.User
 import ru.geekbrains.kozirfm.kotlincourse.data.errors.NoAuthException
 import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
 
-class FirestoreDataProvider : RemoteDataProvider {
+class FirestoreDataProvider(private val firebaseAuth: FirebaseAuth, private val firebaseFirestore: FirebaseFirestore) : RemoteDataProvider {
 
     companion object {
         private const val NOTES_COLLECTION = "notes"

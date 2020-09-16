@@ -27,6 +27,7 @@
         android:src="@drawable/ic_add_white_24dp"
         app:backgroundTint="@color/colorPrimaryDarkYellow"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:tint="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

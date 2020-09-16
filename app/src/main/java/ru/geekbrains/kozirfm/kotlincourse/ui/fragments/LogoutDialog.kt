@@ -1,9 +1,9 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.fragments
 
-import android.app.AlertDialog
 import android.app.Dialog
 import android.os.Bundle
 import androidx.fragment.app.DialogFragment
+import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import ru.geekbrains.kozirfm.kotlincourse.R
 
 class LogoutDialog : DialogFragment() {
@@ -22,11 +22,11 @@ class LogoutDialog : DialogFragment() {
     var onLogout: (() -> Unit)? = null
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        return AlertDialog.Builder(context)
+        return MaterialAlertDialogBuilder(requireContext())
                 .setTitle(R.string.logout_title)
                 .setMessage(R.string.logout_message)
-                .setPositiveButton(R.string.logout_ok) { dialog, which -> onLogout?.invoke() }
-                .setNegativeButton(R.string.logout_cancel) { dialog, which -> dismiss() }
+                .setPositiveButton(R.string.logout_ok) { _, _ -> onLogout?.invoke() }
+                .setNegativeButton(R.string.logout_cancel) { _, _ -> dismiss() }
                 .create()
     }
 

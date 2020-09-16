@@ -4,6 +4,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
+import kotlinx.android.extensions.LayoutContainer
 import kotlinx.android.synthetic.main.cell_note.view.*
 import ru.geekbrains.kozirfm.kotlincourse.R
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
@@ -30,9 +31,9 @@ class NotesAdapter(var onItemClick: ((Note) -> Unit)? = null) : RecyclerView.Ada
         return notes.count()
     }
 
-    inner class NotesViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+    inner class NotesViewHolder(override val containerView: View) : RecyclerView.ViewHolder(containerView), LayoutContainer {
 
-        fun bind(note: Note) = with(itemView) {
+        fun bind(note: Note) = with(containerView) {
             txtTitleNote.text = note.title
             txtTextNote.text = note.text
 
