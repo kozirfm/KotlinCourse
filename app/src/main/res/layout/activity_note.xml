@@ -48,8 +48,8 @@
             android:clickable="true"
             android:focusable="true"
             app:backgroundTint="@color/colorPrimaryDarkYellow"
-            app:rippleColor="#FFFFFF"
-            app:srcCompat="@drawable/ic_done_white_24dp" />
+            app:srcCompat="@drawable/ic_done_white_24dp"
+            app:tint="@android:color/white" />
     </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

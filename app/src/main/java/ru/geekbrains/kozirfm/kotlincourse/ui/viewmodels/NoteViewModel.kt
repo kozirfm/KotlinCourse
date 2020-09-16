@@ -8,20 +8,20 @@ import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.NoteViewState
 import java.util.*
 
-class NoteViewModel : BaseViewModel<Note?, NoteViewState>() {
+class NoteViewModel(val notesRepository: NotesRepository) : BaseViewModel<Note?, NoteViewState>() {
 
     fun addOrChangeNote(note: Note? = null, title: String, text: String) {
         note?.let {if (note.title != title || note.text != text) {
                 val newNote = note.copy(title = title, text = text, lastChanged = Date())
-                addObserver(NotesRepository.changeNote(note, newNote))
+                addObserver(notesRepository.changeNote(note, newNote))
             }}
                 ?: if (title != "" || text != "") {
-                addObserver(NotesRepository.saveNote(Note(title, text)))
+                addObserver(notesRepository.saveNote(Note(title, text)))
         }
     }
 
     fun removeNote(note: Note) {
-        addObserver(NotesRepository.removeNote(note))
+        addObserver(notesRepository.removeNote(note))
     }
 
     private fun addObserver(observed: LiveData<NoteResult>) {

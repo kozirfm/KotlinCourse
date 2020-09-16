@@ -6,10 +6,11 @@ import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
-import androidx.lifecycle.ViewModelProvider
 import kotlinx.android.synthetic.main.activity_note.*
+import org.koin.android.ext.android.inject
 import ru.geekbrains.kozirfm.kotlincourse.R
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
+import ru.geekbrains.kozirfm.kotlincourse.ui.fragments.DeleteNoteDialog
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.NoteViewModel
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.NoteViewState
 
@@ -32,9 +33,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     private var note: Note? = null
 
-    override val viewModel: NoteViewModel by lazy {
-        ViewModelProvider(this).get(NoteViewModel::class.java)
-    }
+    override val viewModel: NoteViewModel by inject()
 
     override val layoutRes: Int = R.layout.activity_note
 
@@ -73,9 +72,11 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         when (item.itemId) {
             R.id.noteMenuItemBack -> onBackPressed()
             R.id.noteMenuItemDelete -> {
-                note?.let {
-                    viewModel.removeNote(it)
-                    onBackPressed()
+                note?.let { note ->
+                    supportFragmentManager.findFragmentByTag(DeleteNoteDialog.TAG)
+                    DeleteNoteDialog.createInstance {
+                        onDeleteNote(note)
+                    }.show(supportFragmentManager, DeleteNoteDialog.TAG)
                 }
             }
         }
@@ -86,6 +87,11 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
         data?.let {
             Toast.makeText(applicationContext, getString(R.string.complete), Toast.LENGTH_SHORT).show()
         }
+    }
+
+    private fun onDeleteNote(note: Note) {
+        viewModel.removeNote(note)
+        onBackPressed()
     }
 
 }
