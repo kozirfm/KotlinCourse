@@ -3,24 +3,18 @@ package ru.geekbrains.kozirfm.kotlincourse.data.providers
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.auth.ktx.auth
 import com.google.firebase.firestore.FirebaseFirestore
-import com.google.firebase.firestore.ktx.firestore
-import com.google.firebase.ktx.Firebase
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.User
 import ru.geekbrains.kozirfm.kotlincourse.data.errors.NoAuthException
 import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
 
-class FirestoreDataProvider(private val firebaseAuth: FirebaseAuth, private val firebaseFirestore: FirebaseFirestore) : RemoteDataProvider {
+class FirestoreDataProvider(private val auth: FirebaseAuth, private val store: FirebaseFirestore) : RemoteDataProvider {
 
     companion object {
         private const val NOTES_COLLECTION = "notes"
         private const val USER_COLLECTION = "users"
     }
-
-    private val store by lazy { Firebase.firestore }
-    private val auth by lazy { Firebase.auth }
 
     private val currentUser
         get() = auth.currentUser

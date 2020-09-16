@@ -1,6 +1,5 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.activities
 
-import androidx.lifecycle.ViewModelProvider
 import org.koin.android.ext.android.inject
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.SplashViewModel
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.SplashViewState
