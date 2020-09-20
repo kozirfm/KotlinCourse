@@ -31,54 +31,73 @@ class FirestoreDataProvider(private val auth: FirebaseAuth, private val store: F
 
     override fun getNotes(): LiveData<NoteResult> {
         val result = MutableLiveData<NoteResult>()
-        userNotesCollection.orderBy("lastChanged").addSnapshotListener { snapshot, e ->
-            e?.let {
-                result.value = NoteResult.Error(e)
-            } ?: let {
-                snapshot?.let {
-                    val notes = snapshot.documents.map { doc ->
-                        doc.toObject(Note::class.java)
+        try {
+            userNotesCollection.orderBy("lastChanged").addSnapshotListener { snapshot, e ->
+                e?.let {
+                    result.value = NoteResult.Error(e)
+                } ?: let {
+                    snapshot?.let {
+                        val notes = snapshot.documents.map { doc ->
+                            doc.toObject(Note::class.java)
+                        }
+                        result.value = NoteResult.Success(notes)
                     }
-                    result.value = NoteResult.Success(notes)
                 }
             }
+
+        } catch (e: Throwable) {
+            result.value = NoteResult.Error(e)
         }
         return result
     }
 
     override fun saveNote(note: Note): LiveData<NoteResult> {
         val result = MutableLiveData<NoteResult>()
-        userNotesCollection.document().set(note).addOnSuccessListener {
-            result.value = NoteResult.Success(note)
-        }.addOnFailureListener { e ->
+        try {
+            userNotesCollection.document().set(note)
+                    .addOnSuccessListener {
+                        result.value = NoteResult.Success(note)
+                    }.addOnFailureListener { e ->
+                        result.value = NoteResult.Error(e)
+                    }
+        } catch (e: Throwable) {
             result.value = NoteResult.Error(e)
         }
+
         return result
     }
 
     override fun changeNote(note: Note, newNote: Note): LiveData<NoteResult> {
         val result = MutableLiveData<NoteResult>()
-        userNotesCollection.whereEqualTo("lastChanged", note.lastChanged)
-                .get().addOnSuccessListener {
-                    it.documents[0].reference.update("title", newNote.title,
-                            "text", newNote.text,
-                            "lastChanged", newNote.lastChanged)
-                    result.value = NoteResult.Success(newNote)
-                }.addOnFailureListener { e ->
-                    result.value = NoteResult.Error(e)
-                }
+        try {
+            userNotesCollection.whereEqualTo("lastChanged", note.lastChanged)
+                    .get().addOnSuccessListener {
+                        it.documents[0].reference.update("title", newNote.title,
+                                "text", newNote.text,
+                                "lastChanged", newNote.lastChanged)
+                        result.value = NoteResult.Success(newNote)
+                    }.addOnFailureListener { e ->
+                        result.value = NoteResult.Error(e)
+                    }
+        } catch (e: Throwable) {
+            result.value = NoteResult.Error(e)
+        }
         return result
     }
 
     override fun removeNote(note: Note): LiveData<NoteResult> {
         val result = MutableLiveData<NoteResult>()
-        userNotesCollection.whereEqualTo("lastChanged", note.lastChanged)
-                .get().addOnSuccessListener {
-                    it.documents[0].reference.delete()
-                    result.value = NoteResult.Success(note)
-                }.addOnFailureListener { e ->
-                    result.value = NoteResult.Error(e)
-                }
+        try {
+            userNotesCollection.whereEqualTo("lastChanged", note.lastChanged)
+                    .get().addOnSuccessListener {
+                        it.documents[0].reference.delete()
+                        result.value = NoteResult.Success(note)
+                    }.addOnFailureListener { e ->
+                        result.value = NoteResult.Error(e)
+                    }
+        } catch (e: Throwable) {
+            result.value = NoteResult.Error(e)
+        }
         return result
     }
 }
