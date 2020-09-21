@@ -112,4 +112,25 @@ class FirestoreDataProviderTest {
         assertEquals(result, testNotes[0])
     }
 
+    @Test
+    fun `removeNote returns Note`() {
+        val note = testNotes[0]
+        var result: Note? = null
+        val mockShapshot = mockk<QuerySnapshot>()
+        val slot = slot<OnSuccessListener<QuerySnapshot>>()
+
+        every { mockResultCollection.whereEqualTo("lastChanged", note.lastChanged).get().addOnSuccessListener(capture(slot)) } returns mockk()
+        every { mockShapshot.documents[0].reference.delete() } returns mockk()
+
+        provider.removeNote(testNotes[0]).observeForever {
+            when (it) {
+                is NoteResult.Success<*> -> result = it.data as Note
+            }
+        }
+
+        slot.captured.onSuccess(mockShapshot)
+
+        assertEquals(result, note)
+    }
+
 }
