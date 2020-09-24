@@ -1,18 +1,14 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels
 
+import kotlinx.coroutines.launch
 import ru.geekbrains.kozirfm.kotlincourse.data.NotesRepository
 import ru.geekbrains.kozirfm.kotlincourse.data.errors.NoAuthException
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.SplashViewState
 
-class SplashViewModel(val notesRepository: NotesRepository) : BaseViewModel<Boolean?, SplashViewState>() {
+class SplashViewModel(private val notesRepository: NotesRepository) : BaseViewModel<Boolean?>() {
 
-    fun requestUser() {
-        notesRepository.getCurrentUser().observeForever {
-            viewStateLiveData.value = it?.let {
-                SplashViewState(authenticated = true)
-            } ?: let {
-                SplashViewState(error = NoAuthException())
-            }
-        }
+    fun requestUser() = launch {
+        notesRepository.getCurrentUser()?.let {
+            setData(true)
+        } ?: setError(NoAuthException())
     }
 }

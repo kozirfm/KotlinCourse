@@ -12,9 +12,8 @@ import ru.geekbrains.kozirfm.kotlincourse.R
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.ui.fragments.DeleteNoteDialog
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.NoteViewModel
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.NoteViewState
 
-class NoteActivity : BaseActivity<Note?, NoteViewState>() {
+class NoteActivity : BaseActivity<Note?>() {
 
     companion object {
         private val EXTRA_NOTE = NoteActivity::class.java.name + "extra.NOTE"
@@ -33,7 +32,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
 
     private var note: Note? = null
 
-    override val viewModel: NoteViewModel by inject()
+    override val model: NoteViewModel by inject()
 
     override val layoutRes: Int = R.layout.activity_note
 
@@ -58,7 +57,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     private fun txtFromViewToNote(note: Note?) {
-        viewModel.addOrChangeNote(note = note,
+        model.addOrChangeNote(note = note,
                 title = editTxtTitleNoteActivity.text.toString(),
                 text = editTxtTextNoteActivity.text.toString())
     }
@@ -90,7 +89,7 @@ class NoteActivity : BaseActivity<Note?, NoteViewState>() {
     }
 
     private fun onDeleteNote(note: Note) {
-        viewModel.removeNote(note)
+        model.removeNote(note)
         onBackPressed()
     }
 

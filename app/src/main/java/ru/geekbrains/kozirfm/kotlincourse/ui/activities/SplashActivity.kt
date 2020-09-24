@@ -2,17 +2,16 @@ package ru.geekbrains.kozirfm.kotlincourse.ui.activities
 
 import org.koin.android.ext.android.inject
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.SplashViewModel
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.SplashViewState
 
-class SplashActivity : BaseActivity<Boolean?, SplashViewState>() {
+class SplashActivity : BaseActivity<Boolean?>() {
 
-    override val viewModel: SplashViewModel by inject()
+    override val model: SplashViewModel by inject()
 
     override val layoutRes: Int? = null
 
     override fun onResume() {
         super.onResume()
-        viewModel.requestUser()
+        model.requestUser()
     }
 
     override fun renderData(data: Boolean?) {
