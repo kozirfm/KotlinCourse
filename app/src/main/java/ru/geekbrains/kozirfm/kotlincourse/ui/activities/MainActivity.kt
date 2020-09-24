@@ -14,9 +14,8 @@ import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.ui.adapters.NotesAdapter
 import ru.geekbrains.kozirfm.kotlincourse.ui.fragments.LogoutDialog
 import ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels.MainViewModel
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewStates
 
-class MainActivity : BaseActivity<List<Note>?, MainViewStates>() {
+class MainActivity : BaseActivity<List<Note>?>() {
 
     companion object {
         fun start(context: Context) {
@@ -31,7 +30,7 @@ class MainActivity : BaseActivity<List<Note>?, MainViewStates>() {
         }
     }
 
-    override val viewModel: MainViewModel by inject()
+    override val model: MainViewModel by inject()
 
     override val layoutRes: Int = R.layout.activity_main
     override fun onCreate(savedInstanceState: Bundle?) {

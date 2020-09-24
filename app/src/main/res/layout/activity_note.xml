@@ -4,7 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp">
+    android:padding="8dp"
+    tools:context=".ui.activities.NoteActivity">
 
     <EditText
         android:id="@+id/editTxtTitleNoteActivity"
@@ -31,25 +32,17 @@
         app:layout_constraintTop_toBottomOf="@+id/editTxtTitleNoteActivity"
         tools:ignore="LabelFor" />
 
-    <androidx.coordinatorlayout.widget.CoordinatorLayout
-        android:layout_width="0dp"
-        android:layout_height="0dp"
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/noteFabSave"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:src="@drawable/ic_done_white_24dp"
+        app:backgroundTint="@color/colorPrimaryDarkYellow"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/noteFabSave"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="16dp"
-            android:clickable="true"
-            android:focusable="true"
-            app:backgroundTint="@color/colorPrimaryDarkYellow"
-            app:srcCompat="@drawable/ic_done_white_24dp"
-            app:tint="@android:color/white" />
-    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+        app:tint="@android:color/white" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,34 +1,28 @@
 package ru.geekbrains.kozirfm.kotlincourse.ui.viewmodels
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.Observer
+import kotlinx.coroutines.channels.consumeEach
+import kotlinx.coroutines.launch
 import ru.geekbrains.kozirfm.kotlincourse.data.NotesRepository
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
-import ru.geekbrains.kozirfm.kotlincourse.ui.viewstate.MainViewStates
 
-class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>?, MainViewStates>() {
+class MainViewModel(notesRepository: NotesRepository) : BaseViewModel<List<Note>?>() {
 
-    private val notesObserver = Observer<NoteResult> { result ->
-        result ?: return@Observer
-        when (result) {
-            is NoteResult.Success<*> -> {
-                viewStateLiveData.value = MainViewStates.ShowNotes(notes = result.data as List<Note>?)
-            }
-            is NoteResult.Error -> {
-                viewStateLiveData.value = MainViewStates.ShowError(error = result.error)
+    private val notesChannel = notesRepository.getNotes()
+
+    init {
+        launch {
+            notesChannel.consumeEach {
+                when (it) {
+                    is NoteResult.Success<*> -> setData(it.data as? List<Note>)
+                    is NoteResult.Error -> setError(it.error)
+                }
             }
         }
     }
 
-    private val repositoryNotes: LiveData<NoteResult> = notesRepository.getNotes()
-
-    init {
-        repositoryNotes.observeForever(notesObserver)
-    }
-
     override fun onCleared() {
-        repositoryNotes.removeObserver(notesObserver)
+        notesChannel.cancel()
         super.onCleared()
     }
 }

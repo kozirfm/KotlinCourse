@@ -1,14 +1,14 @@
 package ru.geekbrains.kozirfm.kotlincourse.data.providers
 
-import androidx.lifecycle.LiveData
+import kotlinx.coroutines.channels.ReceiveChannel
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.Note
 import ru.geekbrains.kozirfm.kotlincourse.data.entity.User
 import ru.geekbrains.kozirfm.kotlincourse.data.model.NoteResult
 
 interface RemoteDataProvider {
-    fun getNotes(): LiveData<NoteResult>
-    fun changeNote(note: Note, newNote: Note): LiveData<NoteResult>
-    fun removeNote(note: Note): LiveData<NoteResult>
-    fun saveNote(note: Note): LiveData<NoteResult>
-    fun getCurrentUser(): LiveData<User?>
+    fun getNotes(): ReceiveChannel<NoteResult>
+    suspend fun saveNote(note: Note): Note
+    suspend fun changeNote(note: Note, newNote: Note): Note
+    suspend fun removeNote(note: Note): Note
+    suspend fun getCurrentUser(): User?
 }
